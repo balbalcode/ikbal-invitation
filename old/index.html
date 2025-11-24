@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ikbal RSVP Invitation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ffe9b5, #f5f5f5);
+      padding: 16px;
+    }
+
+    .card {
+      max-width: 480px;
+      width: 100%;
+      background: #ffffffdd;
+      border-radius: 18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+      padding: 24px 24px 18px;
+      text-align: center;
+      border: 1px solid #f0d08a;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #f2c560;
+      color: #b37803;
+      background: #fff8e3;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+      color: #222;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #777;
+      margin-bottom: 18px;
+    }
+
+    .name-line {
+      margin-bottom: 14px;
+      font-size: 0.98rem;
+    }
+
+    .name-line span {
+      font-weight: 600;
+    }
+
+    .event-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .event-info {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    .divider {
+      margin: 16px auto;
+      width: 40%;
+      border: 0;
+      border-top: 1px dashed #e0b96a;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: #999;
+      margin-top: 6px;
+    }
+
+    .btn-reveal {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: #ffd46a;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+    }
+
+    .btn-reveal:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+      background: #ffca46;
+    }
+
+    .btn-reveal:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .punchline {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: #444;
+      display: none;
+    }
+
+    .punchline strong {
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 16px;
+      font-size: 0.75rem;
+      color: #bbb;
+    }
+
+    .footer a {
+      color: inherit;
+      text-decoration: underline dotted;
+    }
+
+    /* Music play overlay */
+    .music-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(4px);
+    }
+
+    .music-overlay.hidden {
+      display: none;
+    }
+
+    .play-button {
+      background: #ffd46a;
+      border: none;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(255, 212, 106, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .play-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 32px rgba(255, 212, 106, 0.6);
+    }
+
+    .play-button svg {
+      width: 32px;
+      height: 32px;
+      fill: #333;
+      margin-left: 4px;
+    }
+
+    .play-text {
+      color: white;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      position: absolute;
+      bottom: 40%;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 18px 16px 14px;
+      }
+      h1 {
+        font-size: 1.35rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Music Play Overlay -->
+  <div class="music-overlay" id="musicOverlay">
+    <div style="text-align: center;">
+      <button class="play-button" id="playButton">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+      <p class="play-text">Click to play music 🎵</p>
+    </div>
+  </div>
+
+  <!-- Background Audio -->
+  <audio id="bgAudio" loop>
+    <source src="backsound.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="card">
+    <div class="tag">Ikbal Wedding Invitation</div>
+
+    <h1>You Are Cordially Invited</h1>
+    <p class="subtitle">Please read carefully. This looks way too serious.</p>
+
+    <p class="name-line">
+      Dear <span id="guestName">Friend</span>,
+    </p>
+
+    
+
+    <img src="./wkwk.gif" />
+
+
+
+
+    <h1 class="mt-5">WKWKW ANYING</h1>
+    <p class="subtitle">rajin banget w bikin ginian.</p>
+
+    <div class="footer">
+      Tip: You can change the name with <code>?name=Ikbal</code> in the URL.
+    </div>
+  </div>
+
+  <script>
+    // Music play button
+    const musicOverlay = document.getElementById("musicOverlay");
+    const playButton = document.getElementById("playButton");
+    const bgAudio = document.getElementById("bgAudio");
+
+    playButton.addEventListener("click", () => {
+      bgAudio.play().then(() => {
+        musicOverlay.classList.add("hidden");
+      }).catch((error) => {
+        console.log("Audio play failed:", error);
+      });
+    });
+
+    // Change guest name via ?name=YourName
+    const params = new URLSearchParams(window.location.search);
+    const nameFromUrl = params.get("name");
+    if (nameFromUrl) {
+      document.getElementById("guestName").textContent = nameFromUrl;
+    }
+
+    // Reveal joke text
+    const btn = document.getElementById("revealBtn");
+    const punchline = document.getElementById("punchline");
+
+    if (btn && punchline) {
+      btn.addEventListener("click", () => {
+        punchline.style.display = "block";
+        btn.style.display = "none";
+      });
+    }
+  </script>
+</body>
+</html>
+
